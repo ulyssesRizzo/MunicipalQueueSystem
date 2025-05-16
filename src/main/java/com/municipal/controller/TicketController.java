@@ -50,24 +50,31 @@ public class TicketController extends HttpServlet {
         response.sendRedirect("admin.jsp?msg=creado");
     }
 
-    private void atenderTicket(HttpServletRequest request, HttpServletResponse response) 
-            throws IOException, ServletException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        
-        if (TicketDAO.cambiarEstado(id, "atendiendo")) {
-            response.sendRedirect("operador.jsp?msg=atendido");
-        } else {
-            response.sendRedirect("operador.jsp?error=atender");
-        }
-    }
+private void atenderTicket(HttpServletRequest request, HttpServletResponse response)
+        throws IOException, ServletException {
+    int id = Integer.parseInt(request.getParameter("id"));
 
-    private void cerrarTicket(HttpServletRequest request, HttpServletResponse response) 
-            throws IOException, ServletException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        
-        TicketDAO.eliminarTicket(id);
-        response.sendRedirect("operador.jsp?msg=cerrado");
+    if (TicketDAO.cambiarEstado(id, "atendiendo")) {
+        List<Ticket> tickets = TicketDAO.obtenerTodos();
+        request.setAttribute("tickets", tickets);
+        request.setAttribute("msg", "atendido");
+        request.getRequestDispatcher("operador.jsp").forward(request, response);
+    } else {
+        response.sendRedirect("operador.jsp?error=atender");
     }
+}
+
+private void cerrarTicket(HttpServletRequest request, HttpServletResponse response)
+        throws IOException, ServletException {
+    int id = Integer.parseInt(request.getParameter("id"));
+
+    TicketDAO.eliminarTicket(id);
+
+    List<Ticket> tickets = TicketDAO.obtenerTodos();
+    request.setAttribute("tickets", tickets);
+    request.setAttribute("msg", "cerrado");
+    request.getRequestDispatcher("operador.jsp").forward(request, response);
+}
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
