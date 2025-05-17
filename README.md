@@ -18,7 +18,7 @@ Sistema de gestión de tickets para municipalidades. Desarrollado en Java, CSS y
 |-----|-----
 | Base de Datos | MySQL 8.0
 | Servidor | Apache Tomcat 9.0
-| JDK | 24
+| JDK | 12
 | IDE | NetBeans 25
 | Conector MySQL | mysql-connector-j-9.3.0
 
